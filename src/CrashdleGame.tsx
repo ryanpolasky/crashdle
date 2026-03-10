@@ -577,6 +577,18 @@ function HelpModal({
                         </div>
                     ))}
                 </div>
+                <div className="mt-4 text-center text-sm tracking-wide text-white/60">
+                    made w/ love by{" "}
+                    <a
+                        href="https://www.linkedin.com/in/ryan-polasky/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold transition-opacity hover:opacity-80"
+                        style={{ color: "#c4b5fd" }}
+                    >
+                        ryan polasky
+                    </a>
+                </div>
             </div>
         </ModalShell>
     );
