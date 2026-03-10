@@ -1019,7 +1019,7 @@ function CrashGameModal({
                 </div>
 
                 <div className="mb-4 text-sm text-white/60">
-                    Risking <span className="font-bold text-white">{stake.toLocaleString()}</span>. Cash out before it explodes.
+                    Risking <span className="font-bold text-white">{stake.toLocaleString()}</span>. Cash out before it crashes. Recents crash points:
                 </div>
 
                 <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -1113,22 +1113,18 @@ function CrashGameModal({
                             <div className="mb-3 flex items-center gap-3">
                                 <div className="relative flex-1">
                                     <input
-                                        type="text"
+                                        type="number"
+                                        min="1"
+                                        step="0.01"
                                         value={autoCashOut}
                                         onChange={(e) => {
-                                            let v = e.target.value.replace(/[^0-9.]/g, "");
-                                            v = v.replace(/^0+(\d)/, "$1");
-                                            const parts = v.split(".");
-                                            if (parts.length > 2)
-                                                v = `${parts[0]}.${parts.slice(1).join("")}`;
+                                            let v = e.target.value;
+                                            if (v !== "" && parseFloat(v) < 1) v = "1";
                                             setAutoCashOut(v);
                                         }}
-                                        placeholder="Optional auto cash-out"
+                                        placeholder="Optional auto cash-out multi (i.e. 2x)"
                                         className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/25"
                                     />
-                                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm text-white/35">
-                    x
-                  </span>
                                 </div>
                             </div>
                         )}
