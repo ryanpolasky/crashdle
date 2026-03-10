@@ -1,12 +1,12 @@
-FROM node:20-alpine AS builder
+# Stage 1: Build the React App
+FROM node:20-alpine as builder
 WORKDIR /app
-COPY package*.json ./
-RUN NODE_ENV=development npm install --legacy-peer-deps
-ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
 RUN npm run build
 
-# Stage 2
+# Stage 2: Serve with Nginx
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
