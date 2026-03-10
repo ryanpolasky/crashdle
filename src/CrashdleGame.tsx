@@ -565,7 +565,7 @@ function HelpModal({
                     How to play
                 </div>
                 <div className="mb-6 text-center text-3xl font-black text-white">
-                    Crashdle
+                    Crash<span style={{ color: "#c4b5fd" }}>dle</span>
                 </div>
                 <div className="space-y-4 text-sm leading-6 text-white/70">
                     {items.map((t, i) => (
@@ -1773,7 +1773,7 @@ export default function CrashdleGame() {
             >
                 <div className="max-w-md rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
                     <div className="mb-2 text-2xl font-black text-white">
-                        Couldn&apos;t load Crashdle
+                        Couldn't load Crash<span style={{ color: "#c4b5fd" }}>dle</span>
                     </div>
                     <div className="text-sm text-white/55">
                         {error ?? "Unknown error."}
