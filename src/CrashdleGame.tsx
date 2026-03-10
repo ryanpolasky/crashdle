@@ -287,7 +287,7 @@ function buildShareText(
     text += solved
         ? `Solved in ${guesses.length}/${MAX_GUESSES}\n`
         : "Missed it\n";
-    text += `Final ${finalAmount.toLocaleString()}`;
+    text += `Final: $${finalAmount.toLocaleString()} 💰`;
     return text.trim();
 }
 
