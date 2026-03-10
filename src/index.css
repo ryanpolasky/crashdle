@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg: #121213;
+  --panel: rgba(255,255,255,0.06);
+  --panel-border: rgba(255,255,255,0.10);
+  --text-dim: rgba(255,255,255,0.65);
+  --accent: #8b5cf6;
+  --accent-2: #22c55e;
+  --shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-width: 320px;
+  color: white;
+  background: radial-gradient(circle at top, rgba(139, 92, 246, 0.22), transparent 34%) radial-gradient(circle at 85% 18%, rgba(34, 197, 94, 0.10), transparent 22%) radial-gradient(circle at 20% 85%, rgba(59, 130, 246, 0.10), transparent 20%) linear-gradient(180deg, #18181b 0%, #121213 45%, #0f0f10 100%) fixed;
+}
+
+.crashdle-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image:
+          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+}
+
+.glass-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.icon-btn {
+  height: 42px;
+  min-width: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  transition: 180ms ease;
+}
+
+.icon-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.35);
+  color: white;
+}
