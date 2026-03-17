@@ -1031,7 +1031,7 @@ function CrashGameModal({
                 </div>
 
                 <div className="mb-4 text-sm text-white/60">
-                    Risking <span className="font-bold text-white">{stake.toLocaleString()}</span>. Cash out before it crashes. Recents crash points:
+                    Risking <span className="font-bold text-white">{stake.toLocaleString()}</span>. Cash out before it crashes. Recent crash points:
                 </div>
 
                 <div className="mb-4 flex flex-wrap items-center gap-2">
