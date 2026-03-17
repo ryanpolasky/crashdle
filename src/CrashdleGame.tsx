@@ -375,7 +375,7 @@ function ModalShell({
                     onClick={() => !closeDisabled && onClose?.()}
                 >
                     <motion.div
-                        className={`relative w-full ${widthClass} overflow-hidden rounded-[28px] border border-white/10 bg-[#18181d]/95 shadow-[0_30px_80px_rgba(0,0,0,0.45)] flex flex-col`}
+                        className={`relative w-full ${widthClass} max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-[28px] border border-white/10 bg-[#18181d]/95 shadow-[0_30px_80px_rgba(0,0,0,0.45)] flex flex-col`}
                         initial={{ opacity: 0, y: 24, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 18, scale: 0.98 }}
