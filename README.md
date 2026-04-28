@@ -67,4 +67,4 @@ The Vite dev server proxies `/api/*` requests to `http://127.0.0.1:8787`, so you
 | Animation | Framer Motion, Canvas 2D             |
 | Build     | Vite 7, PostCSS, ESLint              |
 | Backend   | My own personal server :)            |
-| Hosting   | Cloudflare Pages                     |
+| Hosting   | My own personal server :)            |
