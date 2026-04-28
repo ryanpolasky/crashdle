@@ -557,11 +557,11 @@ function HelpModal({
     return (
         <ModalShell open={open} onClose={onClose} widthClass="max-w-xl">
             <div className="px-6 pb-6 pt-7 md:px-8">
-                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-amber-300/80">
-                    How to play
+                <div className="mb-2 text-center font-mono text-xs uppercase tracking-[0.28em] text-amber-300/80">
+                    [HOW_TO_PLAY]
                 </div>
-                <div className="mb-6 text-center text-3xl font-black text-white">
-                    Crash<span style={{ color: "#c4b5fd" }}>dle</span>
+                <div className="mb-6 text-center font-mono text-3xl font-bold tracking-[-0.02em] text-white">
+                    CRASH<span className="text-amber-400">DLE</span>
                 </div>
                 <div className="space-y-4 text-sm leading-6 text-white/70">
                     {items.map((t, i) => (
@@ -579,8 +579,7 @@ function HelpModal({
                         href="https://www.linkedin.com/in/ryan-polasky/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-semibold transition-opacity hover:opacity-80"
-                        style={{ color: "#c4b5fd" }}
+                        className="font-semibold text-amber-400 transition-opacity hover:opacity-80"
                     >
                         ryan polasky
                     </a>
@@ -1143,7 +1142,7 @@ function CrashGameModal({
                 </div>
 
                 <div className="mb-4 flex flex-wrap items-center gap-2 font-mono text-xs">
-                    <span className="uppercase tracking-[0.18em] text-amber-400/70">TAPE{">"}</span>
+                    <span className="uppercase tracking-[0.18em] text-amber-400/70">RECENT CRASHES{">"}</span>
                     {crashHistory.slice(0, 5).map((entry) => (
                         <span
                             key={entry.day}
@@ -1298,21 +1297,23 @@ function CrashGameModal({
                 <AnimatePresence>
                     {showTips && (
                         <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            className="absolute inset-0 z-20 flex flex-col bg-[#18181d]/98 p-6 "
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 z-20 flex flex-col justify-center bg-[#0e0e10] p-6"
                         >
                             <div className="mb-6 flex items-center justify-between">
-                                <div className="text-xl font-black text-white">Quick notes</div>
+                                <div className="font-mono text-xl font-bold tracking-[-0.02em] text-white">
+                                    [QUICK_NOTES]
+                                </div>
                                 <button
                                     onClick={() => setShowTips(false)}
-                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#27272d] bg-[#111114] text-white/70 transition hover:bg-white/10 hover:text-white"
+                                    className="flex h-8 w-8 items-center justify-center rounded-sm border border-[#27272d] bg-[#111114] text-white/70 transition hover:border-amber-400/50 hover:text-white"
                                 >
                                     ✕
                                 </button>
                             </div>
-                            <div className="space-y-3 text-sm text-white/65">
+                            <div className="space-y-3 text-sm text-white/70">
                                 {[
                                     "The curve climbs exponentially, so waiting longer gets more rewarding and more dangerous.",
                                     "Recent spikes can be tempting, but each day has its own hidden crash point.",
@@ -1742,7 +1743,7 @@ function CrashdleInner({
                         </div>
                         <h1 className="mt-0.5 flex items-center justify-center gap-2 font-mono text-2xl font-bold tracking-[-0.02em] md:justify-start md:text-3xl">
                             <span>
-                                CRASHDLE<span className="ml-0.5 animate-pulse text-amber-400">_</span>
+                                CRASH<span className="text-amber-400">DLE</span>
                             </span>
                             <svg
                                 viewBox="0 0 40 32"
@@ -1796,7 +1797,7 @@ function CrashdleInner({
                         <div className="flex flex-col items-center gap-1">
                             {crashHistory.length > 0 && (
                                 <div className="flex flex-wrap items-center justify-center gap-2 font-mono text-[10px] font-semibold tracking-tight text-white/40 md:text-[11px]">
-                                    <span className="uppercase tracking-[0.18em] text-amber-400/70">TAPE</span>
+                                    <span className="uppercase tracking-[0.18em] text-amber-400/70">RECENT CRASHES</span>
                                     <span aria-hidden className="text-white/20">{">"}</span>
                                     <div className="flex items-center gap-2">
                                         {crashHistory.slice(0, 5).map((entry) => (
@@ -1830,7 +1831,7 @@ function CrashdleInner({
                             )}
                         </div>
 
-                        <div className="flex min-h-0 flex-col items-center justify-center gap-2 md:gap-3">
+                        <div className="relative flex min-h-0 flex-col items-center justify-center gap-2 md:gap-3">
                             <TileGrid
                                 guesses={guesses}
                                 currentGuess={currentGuess}
@@ -1839,14 +1840,17 @@ function CrashdleInner({
                             />
                             <AnimatePresence>
                                 {invalidWord && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: -6 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -6 }}
-                                        className="rounded-full border border-red-300/15 bg-red-500/10 px-3 py-1 text-[11px] font-semibold text-red-200 md:px-4 md:py-1.5 md:text-sm"
-                                    >
-                                        Not a valid word
-                                    </motion.div>
+                                    <div className="pointer-events-none absolute inset-x-0 top-2 z-40 flex justify-center">
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -8 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -8 }}
+                                            className="whitespace-nowrap rounded-sm border border-[#ff3b3b]/50 bg-[#1a0a0a] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-[#ff5c5c] shadow-[0_0_24px_rgba(255,59,59,0.25)] md:text-xs"
+                                        >
+                                            <span className="text-[#ff3b3b]">{"!! "}</span>
+                                            INVALID_WORD
+                                        </motion.div>
+                                    </div>
                                 )}
                             </AnimatePresence>
                         </div>
@@ -1950,8 +1954,8 @@ export default function CrashdleGame() {
                 style={ROOT_BG}
             >
                 <div className="max-w-md rounded-sm border border-[#27272d] bg-[#111114] p-8 ">
-                    <div className="mb-2 text-2xl font-black text-white">
-                        Couldn't load Crash<span style={{ color: "#c4b5fd" }}>dle</span>
+                    <div className="mb-2 font-mono text-2xl font-bold tracking-[-0.02em] text-white">
+                        Couldn&apos;t load CRASH<span className="text-amber-400">DLE</span>
                     </div>
                     <div className="text-sm text-white/55">
                         {error ?? "Unknown error."}
