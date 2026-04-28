@@ -11,9 +11,11 @@
   />
   <meta
           name="keywords"
-          content="crashdle, daily word game, wordle clone, crash game, word puzzle, daily puzzle, 5 letter word, free browser game, crash multiplier"
+          content="crashdle, daily word game, wordle clone, crash game, word puzzle, daily puzzle, 5 letter word, free browser game, crash multiplier, Ryan Polasky"
   />
   <meta name="author" content="Ryan Polasky" />
+  <meta name="creator" content="Ryan Polasky" />
+  <meta name="publisher" content="Ryan Polasky" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
 
   <link rel="canonical" href="https://crashdle.com/" />
@@ -65,28 +67,57 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "VideoGame",
-      "name": "Crashdle",
-      "url": "https://crashdle.com/",
-      "description": "Daily 5-letter word puzzle paired with a live crash multiplier bonus round. Solve the word in six guesses, earn fake cash based on speed, then optionally risk it on a real-time crash game. New puzzle every day at midnight UTC.",
-      "image": "https://crashdle.com/og.webp",
-      "genre": ["Word Game", "Puzzle", "Casual"],
-      "playMode": "SinglePlayer",
-      "gamePlatform": "Web Browser",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "Any",
-      "inLanguage": "en",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "Ryan Polasky",
-        "url": "https://www.linkedin.com/in/ryan-polasky/"
-      }
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://crashdle.com/#ryan-polasky",
+          "name": "Ryan Polasky",
+          "givenName": "Ryan",
+          "familyName": "Polasky",
+          "url": "https://ryanpolasky.com/",
+          "jobTitle": "Software Engineer",
+          "sameAs": [
+            "https://ryanpolasky.com/",
+            "https://github.com/ryanpolasky",
+            "https://www.linkedin.com/in/ryan-polasky/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://crashdle.com/#website",
+          "url": "https://crashdle.com/",
+          "name": "Crashdle",
+          "description": "Daily 5-letter word game with a live crash multiplier bonus round.",
+          "inLanguage": "en",
+          "creator": { "@id": "https://crashdle.com/#ryan-polasky" },
+          "author": { "@id": "https://crashdle.com/#ryan-polasky" },
+          "publisher": { "@id": "https://crashdle.com/#ryan-polasky" }
+        },
+        {
+          "@type": "VideoGame",
+          "@id": "https://crashdle.com/#game",
+          "name": "Crashdle",
+          "url": "https://crashdle.com/",
+          "description": "Daily 5-letter word puzzle paired with a live crash multiplier bonus round. Solve the word in six guesses, earn fake cash based on speed, then optionally risk it on a real-time crash game. New puzzle every day at midnight UTC.",
+          "image": "https://crashdle.com/og.webp",
+          "genre": ["Word Game", "Puzzle", "Casual"],
+          "playMode": "SinglePlayer",
+          "gamePlatform": "Web Browser",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Any",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://crashdle.com/#website" },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          "author": { "@id": "https://crashdle.com/#ryan-polasky" },
+          "creator": { "@id": "https://crashdle.com/#ryan-polasky" },
+          "publisher": { "@id": "https://crashdle.com/#ryan-polasky" }
+        }
+      ]
     }
   </script>
 </head>
