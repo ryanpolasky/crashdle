@@ -3,36 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Crashdle</title>
 
+  <title>Crashdle - Daily Word Game with a Crash Twist</title>
   <meta
           name="description"
-          content="Solve the word, earn fake cash, risk it in a crash game. New puzzle every day."
+          content="Solve a 5-letter word in 6 guesses, then risk your winnings on a live crash multiplier. A new daily puzzle every midnight. Free wordle-meets-crash game in your browser, no signup."
   />
+  <meta
+          name="keywords"
+          content="crashdle, daily word game, wordle clone, crash game, word puzzle, daily puzzle, 5 letter word, free browser game, crash multiplier"
+  />
+  <meta name="author" content="Ryan Polasky" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
 
-  <link rel="canonical" href="https://crashdle.com" />
+  <link rel="canonical" href="https://crashdle.com/" />
 
-  <meta property="og:title" content="Crashdle" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Crashdle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://crashdle.com/" />
+  <meta property="og:title" content="Crashdle - Daily Word Game with a Crash Twist" />
   <meta
           property="og:description"
-          content="Daily word game meets crash gambling. New puzzle every day."
+          content="Solve a 5-letter word, earn fake cash, then risk it on a live crash multiplier. New puzzle every day."
   />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://crashdle.com" />
   <meta property="og:image" content="https://crashdle.com/android-chrome-512x512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:image:alt" content="Crashdle logo: rising green tiles peaking at a yellow tile and crashing into a red tile." />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Crashdle" />
-  <meta name="twitter:description" content="Daily word game meets crash gambling. New puzzle every day." />
+  <meta name="twitter:title" content="Crashdle - Daily Word Game with a Crash Twist" />
+  <meta
+          name="twitter:description"
+          content="Solve a 5-letter word, earn fake cash, then risk it on a live crash multiplier. New puzzle every day."
+  />
   <meta name="twitter:image" content="https://crashdle.com/android-chrome-512x512.png" />
+  <meta name="twitter:image:alt" content="Crashdle logo: rising green tiles peaking at a yellow tile and crashing into a red tile." />
 
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <meta name="application-name" content="Crashdle" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Crashdle" />
+  <meta name="format-detection" content="telephone=no" />
+
   <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+  />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Crashdle",
+      "url": "https://crashdle.com/",
+      "description": "Daily 5-letter word puzzle paired with a live crash multiplier bonus round. Solve the word in six guesses, earn fake cash based on speed, then optionally risk it on a real-time crash game. New puzzle every day at midnight UTC.",
+      "image": "https://crashdle.com/android-chrome-512x512.png",
+      "genre": ["Word Game", "Puzzle", "Casual"],
+      "playMode": "SinglePlayer",
+      "gamePlatform": "Web Browser",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "en",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Ryan Polasky",
+        "url": "https://www.linkedin.com/in/ryan-polasky/"
+      }
+    }
+  </script>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+  <noscript>
+    <h1>Crashdle - Daily Word Game with a Crash Twist</h1>
+    <p>
+      Crashdle is a free daily word puzzle that fuses Wordle-style deduction
+      with a live crash multiplier. Solve a 5-letter word in six guesses to
+      earn play money, then optionally wager it on a real-time crash round
+      that climbs exponentially until it busts. A new puzzle drops every day
+      at midnight UTC.
+    </p>
+    <p>
+      This game requires JavaScript to play. Please enable it in your browser.
+    </p>
+  </noscript>
+</div>
 <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
