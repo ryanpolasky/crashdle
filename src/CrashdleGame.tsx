@@ -503,10 +503,10 @@ function Keyboard({
 }) {
     return (
         <div
-            className={`flex flex-col items-center gap-1 transition ${disabled ? "pointer-events-none opacity-50" : ""}`}
+            className={`flex w-full flex-col gap-1 sm:gap-1.5 transition ${disabled ? "pointer-events-none opacity-50" : ""}`}
         >
             {KB_ROWS.map((row) => (
-                <div key={row.join("")} className="flex w-full justify-center gap-1">
+                <div key={row.join("")} className="flex w-full gap-1 sm:gap-1.5">
                     {row.map((key) => {
                         const wide = key === "ENTER" || key === "⌫";
                         const status = letterStates[key];
@@ -519,19 +519,16 @@ function Keyboard({
                                 key={key}
                                 onClick={() => onKey(key)}
                                 disabled={disabled}
-                                className={`flex items-center justify-center rounded-lg font-bold text-white transition active:scale-95 ${
+                                className={`flex h-12 min-w-0 items-center justify-center rounded-lg font-bold uppercase text-white transition active:scale-[0.97] sm:h-[3.25rem] ${
                                     wide
-                                        ? "px-2 text-[10px] md:text-xs"
-                                        : "text-[11px] md:text-sm"
+                                        ? "flex-[1.55_1_0] text-[10px] sm:text-xs"
+                                        : "flex-1 text-sm sm:text-base"
                                 }`}
                                 style={{
-                                    width: wide
-                                        ? "clamp(2.8rem, min(12vw, 7.2vh), 4.4rem)"
-                                        : "clamp(1.8rem, min(8.2vw, 5.2vh), 2.8rem)",
-                                    height: "clamp(2rem, min(7.2vw, 4.5vh), 2.9rem)",
                                     backgroundColor: bg,
-                                    opacity: status === "absent" ? 0.5 : 1,
-                                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                                    opacity: status === "absent" ? 0.55 : 1,
+                                    boxShadow:
+                                        "inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 0 rgba(0,0,0,0.30)",
                                 }}
                             >
                                 {key}
@@ -588,6 +585,114 @@ function HelpModal({
                     >
                         ryan polasky
                     </a>
+                </div>
+            </div>
+        </ModalShell>
+    );
+}
+
+function StatCell({
+                      label,
+                      value,
+                  }: {
+    label: string;
+    value: number | string;
+}) {
+    return (
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
+            <div className="font-mono text-2xl font-black tabular-nums text-white md:text-[28px]">
+                {value}
+            </div>
+            <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/50">
+                {label}
+            </div>
+        </div>
+    );
+}
+
+function StatsModal({
+                        open,
+                        onClose,
+                        stats,
+                        currentDay,
+                        currentDayGuesses,
+                        currentDaySolved,
+                    }: {
+    open: boolean;
+    onClose: () => void;
+    stats: StoredStats;
+    currentDay: number;
+    currentDayGuesses: number;
+    currentDaySolved: boolean;
+}) {
+    const winPct =
+        stats.gamesPlayed > 0
+            ? Math.round((stats.wins / stats.gamesPlayed) * 100)
+            : 0;
+    const maxDist = Math.max(1, ...stats.guessDistribution);
+    const todayRow =
+        currentDaySolved && stats.lastCompletedDay === currentDay
+            ? currentDayGuesses - 1
+            : -1;
+
+    return (
+        <ModalShell open={open} onClose={onClose} widthClass="max-w-md">
+            <div className="px-6 pb-6 pt-7 md:px-8">
+                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-violet-300/80">
+                    Lifetime stats
+                </div>
+                <div className="mb-5 text-center text-3xl font-black text-white">
+                    Your run
+                </div>
+
+                <div className="mb-6 grid grid-cols-4 gap-2">
+                    <StatCell label="Played" value={stats.gamesPlayed} />
+                    <StatCell label="Win %" value={winPct} />
+                    <StatCell label="Streak" value={stats.currentStreak} />
+                    <StatCell label="Best" value={stats.bestStreak} />
+                </div>
+
+                <div className="mb-2 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white/50">
+                    Guess distribution
+                </div>
+                <div className="flex flex-col gap-1.5">
+                    {stats.guessDistribution.map((count, i) => {
+                        const pct = (count / maxDist) * 100;
+                        const isToday = i === todayRow;
+                        return (
+                            <div key={i} className="flex items-center gap-2">
+                                <span className="w-3 font-mono text-xs text-white/55">
+                                    {i + 1}
+                                </span>
+                                <div className="relative h-6 flex-1 overflow-hidden rounded bg-white/5">
+                                    <motion.div
+                                        className="flex h-full items-center justify-end rounded pr-2"
+                                        style={{
+                                            backgroundColor: isToday
+                                                ? STATUS_COLORS.correct
+                                                : "rgba(255,255,255,0.22)",
+                                        }}
+                                        initial={false}
+                                        animate={{
+                                            width: count > 0 ? `max(${pct}%, 12%)` : "0%",
+                                        }}
+                                        transition={{ duration: 0.6 }}
+                                    >
+                                        <span className="font-mono text-xs font-black text-white">
+                                            {count}
+                                        </span>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div className="mt-6 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-xs text-white/65">
+                    <span className="uppercase tracking-[0.22em]">Next puzzle</span>
+                    <span className="font-mono font-bold text-white/90">
+                        <CountdownToMidnight />
+                    </span>
                 </div>
             </div>
         </ModalShell>
@@ -1386,6 +1491,8 @@ function CrashdleInner({
     );
     const [finalAmount, setFinalAmount] = useState(saved?.finalAmount ?? 0);
     const [showHelp, setShowHelp] = useState(false);
+    const [showStats, setShowStats] = useState(false);
+    const [stats, setStats] = useState<StoredStats>(() => loadStats());
     const [showResult, setShowResult] = useState(saved?.phase === "done");
 
     const solved =
@@ -1417,12 +1524,13 @@ function CrashdleInner({
         setCashOutMult(s.cashOutMultiplier ?? null);
         setFinalAmount(s.finalAmount ?? 0);
         setShowResult(s.phase === "done");
+        setStats(loadStats());
     }, [puzzle.day, puzzle.word]);
 
     useEffect(() => {
         if (phase !== "done") return;
         setShowResult(true);
-        updateStoredStats(puzzle.day, solved, guesses.length);
+        setStats(updateStoredStats(puzzle.day, solved, guesses.length));
     }, [phase, puzzle.day, solved, guesses.length]);
 
     const displayedReward = useMemo(() => {
@@ -1620,54 +1728,97 @@ function CrashdleInner({
             />
 
             <div className="relative mx-auto grid h-full w-full max-w-4xl grid-rows-[auto_1fr] gap-2 px-3 py-3 md:px-4 md:py-4 box-border">
-                <header className="flex min-h-0 flex-col items-center gap-3 text-center md:flex-row md:items-center md:justify-between md:text-left">
+                <header className="flex min-h-0 flex-col items-center gap-2 text-center md:flex-row md:items-center md:justify-between md:gap-3 md:text-left">
                     <div className="min-w-0 w-full md:w-auto">
                         <div className="truncate text-[10px] font-bold uppercase tracking-[0.2em] text-violet-200/80 md:text-[11px]">
-                            Day {puzzle.day} • resets in <CountdownToMidnight />
+                            Day {puzzle.day} • resets in <span className="font-mono"><CountdownToMidnight /></span>
                         </div>
-                        <h1 className="mt-0.5 text-center text-2xl font-black tracking-tight md:text-left md:text-4xl">
-                            Crash<span style={{ color: "#c4b5fd" }}>dle</span>
+                        <h1 className="mt-0.5 flex items-center justify-center gap-2 text-2xl font-black tracking-tight md:justify-start md:text-4xl">
+                            <span>
+                                Crash<span style={{ color: "#c4b5fd" }}>dle</span>
+                            </span>
+                            <svg
+                                viewBox="0 0 40 32"
+                                className="h-6 w-[1.875rem] md:h-8 md:w-10"
+                                aria-hidden="true"
+                            >
+                                <rect x="1" y="24" width="7" height="7" rx="1.4" fill={STATUS_COLORS.correct} />
+                                <rect x="9" y="17" width="7" height="7" rx="1.4" fill={STATUS_COLORS.correct} />
+                                <rect x="17" y="10" width="7" height="7" rx="1.4" fill={STATUS_COLORS.correct} />
+                                <rect x="25" y="3" width="7" height="7" rx="1.4" fill={STATUS_COLORS.present} />
+                                <rect
+                                    x="31.5"
+                                    y="10"
+                                    width="1.6"
+                                    height="5"
+                                    rx="0.8"
+                                    fill="#a8323e"
+                                    transform="rotate(-15 32.3 12.5)"
+                                />
+                                <rect x="32" y="15" width="7" height="7" rx="1.4" fill="#a8323e" />
+                            </svg>
                         </h1>
                     </div>
 
-                    <div className="flex shrink-0 items-center justify-center gap-2 md:justify-end">
+                    <div className="flex shrink-0 items-center justify-center gap-1.5 md:justify-end md:gap-2">
                         <button
                             onClick={() => setShowHelp(true)}
                             className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white md:px-4 md:py-2 md:text-sm"
                         >
-                            Help
+                            How
                         </button>
                         <button
-                            onClick={() => {
-                                if (phase === "done") setShowResult(true);
-                            }}
-                            className={`rounded-full px-3 py-1.5 text-xs font-semibold transition md:px-4 md:py-2 md:text-sm ${
-                                phase === "done"
-                                    ? "text-white"
-                                    : "cursor-not-allowed border border-white/10 bg-white/5 text-white/35"
-                            }`}
-                            style={
-                                phase === "done" ? { backgroundColor: BUTTON_BG } : undefined
-                            }
+                            onClick={() => setShowStats(true)}
+                            className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white md:px-4 md:py-2 md:text-sm"
                         >
-                            Results
+                            Stats
                         </button>
+                        {phase === "done" && (
+                            <button
+                                onClick={() => setShowResult(true)}
+                                className="rounded-full px-3 py-1.5 text-xs font-semibold text-white transition hover:opacity-90 md:px-4 md:py-2 md:text-sm"
+                                style={{ backgroundColor: BUTTON_BG }}
+                            >
+                                Result
+                            </button>
+                        )}
                     </div>
                 </header>
 
                 <main className="min-h-0 rounded-[24px] border border-white/10 bg-white/5 p-2.5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl md:rounded-[28px] md:p-4">
                     <div className="grid h-full min-h-0 grid-rows-[auto_1fr_auto] items-stretch">
-                        <div className="text-center">
-                            <div className="text-[10px] uppercase tracking-[0.24em] text-white/40 md:text-[11px]">
-                                Today&apos;s board
-                            </div>
-                            {showSolveNow && (
-                                <div className="mt-0.5 text-xs font-semibold text-violet-200 md:text-sm">
+                        <div className="flex flex-col items-center gap-1">
+                            {crashHistory.length > 0 && (
+                                <div className="flex flex-wrap items-center justify-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-white/40 md:text-[10px]">
+                                    <span>Recent busts</span>
+                                    <span aria-hidden className="text-white/15">·</span>
+                                    <div className="flex items-center gap-1">
+                                        {crashHistory.slice(0, 5).map((entry) => (
+                                            <span
+                                                key={entry.day}
+                                                className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] tracking-tight md:text-[11px] ${
+                                                    entry.crashPoint >= 2
+                                                        ? "bg-emerald-500/15 text-emerald-300"
+                                                        : "bg-rose-500/15 text-rose-300"
+                                                }`}
+                                            >
+                                                {entry.crashPoint.toFixed(2)}x
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            {showSolveNow ? (
+                                <div className="text-xs font-semibold text-violet-200 md:text-sm">
                                     Solve now for $
                                     <TickingNumber
                                         value={displayedReward}
                                         className="font-mono font-black text-white"
                                     />
+                                </div>
+                            ) : (
+                                <div className="text-[10px] uppercase tracking-[0.24em] text-white/35 md:text-[11px]">
+                                    Today&apos;s board
                                 </div>
                             )}
                         </div>
@@ -1693,7 +1844,7 @@ function CrashdleInner({
                             </AnimatePresence>
                         </div>
 
-                        <div className="mx-auto w-full max-w-[20rem] min-[376px]:max-w-[21.5rem] sm:max-w-2xl">
+                        <div className="mx-auto w-full max-w-[30rem] px-1 pb-[env(safe-area-inset-bottom,0)] sm:max-w-[34rem]">
                             <Keyboard
                                 onKey={handleKey}
                                 letterStates={letterStates}
@@ -1705,6 +1856,14 @@ function CrashdleInner({
             </div>
 
             <HelpModal open={showHelp} onClose={() => setShowHelp(false)} />
+            <StatsModal
+                open={showStats}
+                onClose={() => setShowStats(false)}
+                stats={stats}
+                currentDay={puzzle.day}
+                currentDayGuesses={guesses.length}
+                currentDaySolved={solved}
+            />
             <BetModal
                 open={phase === "bet"}
                 earned={earnedMoney}
