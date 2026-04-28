@@ -1,12 +1,17 @@
 import {
+    lazy,
+    Suspense,
     useCallback,
     useEffect,
     useMemo,
     useRef,
     useState,
     type CSSProperties,
+    type ReactNode,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+
+const MarketingSplash = lazy(() => import("./MarketingSplash"));
 
 type LetterStatus = "correct" | "present" | "absent" | "empty";
 type Phase = "word" | "bet" | "crash" | "done";
@@ -1909,6 +1914,7 @@ export default function CrashdleGame() {
     const [validWords, setValidWords] = useState<Set<string>>(new Set());
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [showMarketing, setShowMarketing] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
@@ -1934,8 +1940,24 @@ export default function CrashdleGame() {
         };
     }, []);
 
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            const tag = (e.target as HTMLElement | null)?.tagName;
+            if (tag === "INPUT" || tag === "TEXTAREA") return;
+            if (e.shiftKey && e.altKey && e.code === "KeyM") {
+                e.preventDefault();
+                setShowMarketing((v) => !v);
+            } else if (e.key === "Escape") {
+                setShowMarketing(false);
+            }
+        };
+        window.addEventListener("keydown", handler);
+        return () => window.removeEventListener("keydown", handler);
+    }, []);
+
+    let content: ReactNode;
     if (loading) {
-        return (
+        content = (
             <div
                 className="flex min-h-screen items-center justify-center text-white"
                 style={ROOT_BG}
@@ -1945,10 +1967,8 @@ export default function CrashdleGame() {
                 </div>
             </div>
         );
-    }
-
-    if (error || !puzzle) {
-        return (
+    } else if (error || !puzzle) {
+        content = (
             <div
                 className="flex min-h-screen items-center justify-center px-6 text-center text-white"
                 style={ROOT_BG}
@@ -1963,13 +1983,32 @@ export default function CrashdleGame() {
                 </div>
             </div>
         );
+    } else {
+        content = (
+            <CrashdleInner
+                puzzle={puzzle}
+                crashHistory={crashHistory}
+                validWords={validWords}
+            />
+        );
     }
 
     return (
-        <CrashdleInner
-            puzzle={puzzle}
-            crashHistory={crashHistory}
-            validWords={validWords}
-        />
+        <>
+            {content}
+            {showMarketing && (
+                <Suspense fallback={null}>
+                    <div
+                        className="fixed inset-0 z-[100] cursor-pointer"
+                        onClick={() => setShowMarketing(false)}
+                        role="button"
+                        aria-label="Close marketing splash"
+                        tabIndex={-1}
+                    >
+                        <MarketingSplash />
+                    </div>
+                </Suspense>
+            )}
+        </>
     );
 }
