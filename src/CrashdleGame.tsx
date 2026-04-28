@@ -41,7 +41,7 @@ interface StoredStats {
     guessDistribution: number[];
 }
 
-const ACCENT = "#8b5cf6";
+const ACCENT = "#fbbf24";
 const WORD_LENGTH = 5;
 const MAX_GUESSES = 6;
 const MULTIPLIER_SPEED = 0.08;
@@ -60,9 +60,13 @@ const REWARDS: Record<number, number> = {
 const STATUS_COLORS: Record<LetterStatus, string> = {
     correct: "#538d4e",
     present: "#b59f3b",
-    absent: "#3a3a3c",
+    absent: "#1c1c1f",
     empty: "transparent",
 };
+
+function fmtMult(m: number) {
+    return m.toFixed(2).padStart(5, "0");
+}
 
 const STATUS_EMOJI: Record<Exclude<LetterStatus, "empty">, string> = {
     correct: "🟩",
@@ -77,12 +81,7 @@ const KB_ROWS = [
 ] as const;
 
 const ROOT_BG: CSSProperties = {
-    background: `
-    radial-gradient(circle at top, rgba(139,92,246,0.20), transparent 28%),
-    radial-gradient(circle at 85% 15%, rgba(34,197,94,0.10), transparent 18%),
-    radial-gradient(circle at 15% 80%, rgba(59,130,246,0.10), transparent 20%),
-    linear-gradient(180deg, #18181b 0%, #121213 40%, #0d0d0f 100%)
-  `,
+    background: "#0a0a0b",
 };
 
 function canUseDOM() {
@@ -368,14 +367,14 @@ function ModalShell({
         <AnimatePresence>
             {open && (
                 <motion.div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4 backdrop-blur-md"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4 "
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={() => !closeDisabled && onClose?.()}
                 >
                     <motion.div
-                        className={`relative w-full ${widthClass} max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-[28px] border border-white/10 bg-[#18181d]/95 shadow-[0_30px_80px_rgba(0,0,0,0.45)] flex flex-col`}
+                        className={`relative w-full ${widthClass} max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-sm border border-white/10 bg-[#0e0e10] shadow-[0_24px_60px_rgba(0,0,0,0.6)] flex flex-col`}
                         initial={{ opacity: 0, y: 24, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -385,7 +384,7 @@ function ModalShell({
                         {!closeDisabled && onClose && (
                             <button
                                 onClick={onClose}
-                                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-white/70 transition hover:bg-white/10 hover:text-white"
+                                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-[#27272d] bg-[#111114] text-lg text-white/70 transition hover:bg-white/10 hover:text-white"
                             >
                                 ✕
                             </button>
@@ -458,7 +457,7 @@ function TileGrid({
                         return (
                             <motion.div
                                 key={`${ri}-${ci}`}
-                                className="flex items-center justify-center rounded-xl border-2 text-lg font-black uppercase text-white md:text-2xl"
+                                className="flex items-center justify-center rounded-sm border-2 font-mono text-lg font-bold uppercase text-white md:text-2xl"
                                 style={{
                                     width: "clamp(2.8rem, min(10.6vw, 5.9vh), 3.9rem)",
                                     height: "clamp(2.8rem, min(10.6vw, 5.9vh), 3.9rem)",
@@ -519,7 +518,7 @@ function Keyboard({
                                 key={key}
                                 onClick={() => onKey(key)}
                                 disabled={disabled}
-                                className={`flex h-12 min-w-0 items-center justify-center rounded-lg font-bold uppercase text-white transition active:scale-[0.97] sm:h-[3.25rem] ${
+                                className={`flex h-12 min-w-0 items-center justify-center rounded-sm font-mono font-bold uppercase text-white transition active:scale-[0.97] sm:h-[3.25rem] ${
                                     wide
                                         ? "flex-[1.55_1_0] text-[10px] sm:text-xs"
                                         : "flex-1 text-sm sm:text-base"
@@ -558,7 +557,7 @@ function HelpModal({
     return (
         <ModalShell open={open} onClose={onClose} widthClass="max-w-xl">
             <div className="px-6 pb-6 pt-7 md:px-8">
-                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-violet-300/80">
+                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-amber-300/80">
                     How to play
                 </div>
                 <div className="mb-6 text-center text-3xl font-black text-white">
@@ -568,7 +567,7 @@ function HelpModal({
                     {items.map((t, i) => (
                         <div
                             key={i}
-                            className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                            className="rounded-sm border border-[#27272d] bg-[#111114] p-4"
                         >
                             {t}
                         </div>
@@ -599,7 +598,7 @@ function StatCell({
     value: number | string;
 }) {
     return (
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
+        <div className="rounded-sm border border-[#27272d] bg-[#111114] p-3 text-center">
             <div className="font-mono text-2xl font-black tabular-nums text-white md:text-[28px]">
                 {value}
             </div>
@@ -638,7 +637,7 @@ function StatsModal({
     return (
         <ModalShell open={open} onClose={onClose} widthClass="max-w-md">
             <div className="px-6 pb-6 pt-7 md:px-8">
-                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-violet-300/80">
+                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-amber-300/80">
                     Lifetime stats
                 </div>
                 <div className="mb-5 text-center text-3xl font-black text-white">
@@ -688,7 +687,7 @@ function StatsModal({
                     })}
                 </div>
 
-                <div className="mt-6 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-xs text-white/65">
+                <div className="mt-6 flex items-center justify-between rounded-sm border border-[#27272d] bg-[#111114] px-4 py-3 text-xs text-white/65">
                     <span className="uppercase tracking-[0.22em]">Next puzzle</span>
                     <span className="font-mono font-bold text-white/90">
                         <CountdownToMidnight />
@@ -745,7 +744,7 @@ function BetModal({
     return (
         <ModalShell open={open} closeDisabled widthClass="max-w-xl">
             <div className="px-6 pb-6 pt-7 md:px-8">
-                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-violet-300/80">
+                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-amber-300/80">
                     Bonus unlocked
                 </div>
                 <div className="mb-1 text-center text-3xl font-black text-white">
@@ -756,7 +755,7 @@ function BetModal({
                     round.
                 </div>
 
-                <div className="mb-6 rounded-[28px] border border-violet-400/20 bg-gradient-to-br from-violet-500/15 to-white/5 p-5 text-center">
+                <div className="mb-6 rounded-sm border border-amber-400/30 bg-gradient-to-br from-amber-500/15 to-white/5 p-5 text-center">
                     <div className="text-xs uppercase tracking-[0.24em] text-white/45">
                         Guaranteed bank
                     </div>
@@ -772,10 +771,10 @@ function BetModal({
                             <button
                                 key={o.id}
                                 onClick={() => setSelected(o.id)}
-                                className={`rounded-2xl border px-4 py-3 text-sm font-bold transition ${
+                                className={`rounded-sm border px-4 py-3 text-sm font-bold transition ${
                                     active
-                                        ? "border-violet-300/40 text-white"
-                                        : "border-white/10 bg-white/5 text-white/60 hover:bg-white/10"
+                                        ? "border-amber-400/40 text-white"
+                                        : "border-[#27272d] bg-[#111114] text-white/60 hover:bg-white/10"
                                 }`}
                                 style={active ? { backgroundColor: BUTTON_BG } : undefined}
                             >
@@ -785,7 +784,7 @@ function BetModal({
                     })}
                 </div>
 
-                <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div className="mt-3 rounded-sm border border-[#27272d] bg-[#111114] p-3">
                     <div className="mb-2 flex items-center justify-between">
             <span className="text-xs uppercase tracking-[0.24em] text-white/45">
               Custom wager
@@ -819,13 +818,13 @@ function BetModal({
                                 setSelected("custom");
                             }}
                             placeholder="0"
-                            className="w-full rounded-2xl border border-white/10 bg-black/20 py-3 pl-8 pr-4 text-white outline-none transition focus:border-white/25"
+                            className="w-full rounded-sm border border-white/10 bg-black/20 py-3 pl-8 pr-4 text-white outline-none transition focus:border-white/25"
                         />
                     </div>
                 </div>
 
                 <div className="mt-4 grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="rounded-sm border border-[#27272d] bg-[#111114] p-4">
                         <div className="text-xs uppercase tracking-[0.24em] text-white/45">
                             At risk
                         </div>
@@ -833,7 +832,7 @@ function BetModal({
                             {betAmount.toLocaleString()}
                         </div>
                     </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="rounded-sm border border-[#27272d] bg-[#111114] p-4">
                         <div className="text-xs uppercase tracking-[0.24em] text-white/45">
                             Safe now
                         </div>
@@ -845,7 +844,7 @@ function BetModal({
 
                 <motion.button
                     onClick={() => onConfirm(betAmount)}
-                    className="mt-6 w-full rounded-2xl py-4 text-base font-black text-white shadow-lg"
+                    className="mt-6 w-full rounded-sm py-4 text-base font-black text-white shadow-lg"
                     style={{
                         backgroundColor: betAmount > 0 ? BUTTON_BG : STATUS_COLORS.correct,
                     }}
@@ -932,7 +931,7 @@ function CrashGameModal({
                         ? "#22c55e"
                         : ACCENT;
 
-            ctx.strokeStyle = "rgba(255,255,255,0.06)";
+            ctx.strokeStyle = "rgba(251,191,36,0.08)";
             ctx.lineWidth = 1;
             for (let m = 1; m <= maxMult; m += maxMult > 6 ? 1 : 0.5) {
                 const y = pad.top + gh - ((m - 1) / (maxMult - 1)) * gh;
@@ -940,8 +939,8 @@ function CrashGameModal({
                 ctx.moveTo(pad.left, y);
                 ctx.lineTo(pad.left + gw, y);
                 ctx.stroke();
-                ctx.fillStyle = "rgba(255,255,255,0.22)";
-                ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, monospace";
+                ctx.fillStyle = "rgba(251,191,36,0.45)";
+                ctx.font = "10px 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace";
                 ctx.textAlign = "right";
                 ctx.fillText(`${m.toFixed(1)}x`, pad.left - 6, y + 3);
             }
@@ -1120,41 +1119,46 @@ function CrashGameModal({
             <div className="relative flex flex-col px-5 pb-5 pt-6 md:px-6">
                 <div className="mb-4 flex items-start justify-between">
                     <div>
-                        <div className="mb-1 text-xs uppercase tracking-[0.28em] text-violet-300/80">
-                            Bonus round
+                        <div className="mb-1 font-mono text-xs uppercase tracking-[0.28em] text-amber-300/80">
+                            [BONUS_ROUND]
                         </div>
-                        <div className="text-2xl font-black leading-none text-white md:text-3xl">
-                            Catch the multiplier
+                        <div className="font-mono text-2xl font-bold leading-none text-white md:text-3xl">
+                            CATCH_MULTIPLIER
                         </div>
                     </div>
                     <button
                         onClick={() => setShowTips(true)}
-                        className="flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white"
+                        className="flex items-center justify-center rounded-full border border-[#27272d] bg-[#111114] px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white"
                     >
                         💡 Tips
                     </button>
                 </div>
 
-                <div className="mb-4 text-sm text-white/60">
-                    Risking <span className="font-bold text-white">{stake.toLocaleString()}</span>. Cash out before it crashes. Recent crash points:
+                <div className="mb-4 font-mono text-xs text-white/60">
+                    <span className="uppercase tracking-[0.18em] text-white/40">STAKE</span>{" "}
+                    <span className="text-amber-400">{">"}</span>{" "}
+                    <span className="font-bold text-white">${stake.toLocaleString()}</span>
+                    <span className="mx-2 text-white/20">::</span>
+                    <span className="uppercase tracking-[0.18em] text-white/40">CASH_OUT BEFORE BUST</span>
                 </div>
 
-                <div className="mb-4 flex flex-wrap items-center gap-2">
+                <div className="mb-4 flex flex-wrap items-center gap-2 font-mono text-xs">
+                    <span className="uppercase tracking-[0.18em] text-amber-400/70">TAPE{">"}</span>
                     {crashHistory.slice(0, 5).map((entry) => (
                         <span
                             key={entry.day}
-                            className={`rounded-full px-3 py-1.5 text-xs font-bold ${
+                            className={`font-bold tracking-tight ${
                                 entry.crashPoint >= 2
-                                    ? "bg-green-500/15 text-green-300"
-                                    : "bg-red-500/15 text-red-300"
+                                    ? "text-emerald-400"
+                                    : "text-rose-400"
                             }`}
                         >
-              {entry.crashPoint.toFixed(2)}x
-            </span>
+                            {fmtMult(entry.crashPoint)}{entry.crashPoint >= 2 ? "↑" : "↓"}
+                        </span>
                     ))}
                 </div>
 
-                <div className="mb-4 flex flex-col rounded-[28px] border border-white/10 bg-white/5 p-4">
+                <div className="mb-4 flex flex-col rounded-sm border border-[#27272d] bg-[#111114] p-4">
                     <div className="mb-3 text-center">
                         <motion.span
                             ref={multDisplayRef}
@@ -1171,9 +1175,9 @@ function CrashGameModal({
                                 state === "running"
                                     ? {
                                         textShadow: [
-                                            "0 0 0 rgba(139,92,246,0.2)",
-                                            "0 0 26px rgba(139,92,246,0.55)",
-                                            "0 0 0 rgba(139,92,246,0.2)",
+                                            "0 0 0 rgba(251,191,36,0.2)",
+                                            "0 0 26px rgba(251,191,36,0.6)",
+                                            "0 0 0 rgba(251,191,36,0.2)",
                                         ],
                                     }
                                     : undefined
@@ -1206,7 +1210,7 @@ function CrashGameModal({
 
                     <div
                         ref={containerRef}
-                        className="relative h-[200px] w-full overflow-hidden rounded-2xl border border-white/8 bg-black/15"
+                        className="relative h-[200px] w-full overflow-hidden rounded-sm border border-white/8 bg-black/15"
                     >
                         <canvas
                             ref={canvasRef}
@@ -1240,7 +1244,7 @@ function CrashGameModal({
                                             setAutoCashOut(v);
                                         }}
                                         placeholder="Optional auto cash-out multi (i.e. 2x)"
-                                        className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/25"
+                                        className="w-full rounded-sm border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-white/25"
                                     />
                                 </div>
                             </div>
@@ -1249,7 +1253,7 @@ function CrashGameModal({
                         <motion.button
                             onClick={state === "running" ? handleCashOut : handleStart}
                             disabled={state === "countdown"}
-                            className="w-full rounded-2xl py-4 text-lg font-black uppercase tracking-[0.18em] text-white disabled:opacity-50"
+                            className="w-full rounded-sm py-4 text-lg font-black uppercase tracking-[0.18em] text-white disabled:opacity-50"
                             style={{ backgroundColor: BUTTON_BG }}
                             whileHover={{ scale: 1.01 }}
                             whileTap={{ scale: 0.98 }}
@@ -1279,7 +1283,7 @@ function CrashGameModal({
                     </>
                 ) : (
                     <div
-                        className={`rounded-2xl py-4 text-center text-lg font-black ${
+                        className={`rounded-sm py-4 text-center text-lg font-black ${
                             state === "cashed"
                                 ? "bg-green-500/15 text-green-300"
                                 : "bg-red-500/15 text-red-300"
@@ -1297,13 +1301,13 @@ function CrashGameModal({
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
-                            className="absolute inset-0 z-20 flex flex-col bg-[#18181d]/98 p-6 backdrop-blur-md"
+                            className="absolute inset-0 z-20 flex flex-col bg-[#18181d]/98 p-6 "
                         >
                             <div className="mb-6 flex items-center justify-between">
                                 <div className="text-xl font-black text-white">Quick notes</div>
                                 <button
                                     onClick={() => setShowTips(false)}
-                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition hover:bg-white/10 hover:text-white"
+                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#27272d] bg-[#111114] text-white/70 transition hover:bg-white/10 hover:text-white"
                                 >
                                     ✕
                                 </button>
@@ -1316,7 +1320,7 @@ function CrashGameModal({
                                 ].map((t, i) => (
                                     <div
                                         key={i}
-                                        className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                                        className="rounded-sm border border-[#27272d] bg-[#111114] p-4"
                                     >
                                         {t}
                                     </div>
@@ -1370,7 +1374,7 @@ function ResultModal({
     return (
         <ModalShell open={open} onClose={onClose} widthClass="max-w-xl">
             <div className="px-6 pb-6 pt-7 md:px-8">
-                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-violet-300/80">
+                <div className="mb-2 text-center text-xs uppercase tracking-[0.28em] text-amber-300/80">
                     Day {dayNumber}
                 </div>
                 <div className="mb-1 text-center text-3xl font-black text-white">
@@ -1383,9 +1387,9 @@ function ResultModal({
                 </div>
 
                 <div
-                    className={`mb-5 rounded-[28px] border p-5 text-center ${
+                    className={`mb-5 rounded-sm border p-5 text-center ${
                         solved
-                            ? "border-violet-300/20 bg-gradient-to-br from-violet-500/15 to-white/5"
+                            ? "border-amber-400/20 bg-gradient-to-br from-amber-500/15 to-white/5"
                             : "border-red-400/20 bg-gradient-to-br from-red-500/12 to-white/5"
                     }`}
                 >
@@ -1400,7 +1404,7 @@ function ResultModal({
                 </div>
 
                 <div className="mb-5 grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="rounded-sm border border-[#27272d] bg-[#111114] p-4">
                         <div className="text-xs uppercase tracking-[0.24em] text-white/45">
                             Word reward
                         </div>
@@ -1408,7 +1412,7 @@ function ResultModal({
                             {earned.toLocaleString()}
                         </div>
                     </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="rounded-sm border border-[#27272d] bg-[#111114] p-4">
                         <div className="text-xs uppercase tracking-[0.24em] text-white/45">
                             Bonus result
                         </div>
@@ -1436,7 +1440,7 @@ function ResultModal({
                             {evaluate(guess, answer).map((status, ci) => (
                                 <div
                                     key={`${ri}-${ci}`}
-                                    className="h-8 w-8 rounded-lg"
+                                    className="h-8 w-8 rounded-sm"
                                     style={{ backgroundColor: STATUS_COLORS[status] }}
                                 />
                             ))}
@@ -1447,7 +1451,7 @@ function ResultModal({
                 <div className="grid grid-cols-2 gap-3">
                     <motion.button
                         onClick={handleShare}
-                        className="rounded-2xl py-4 text-base font-black text-white"
+                        className="rounded-sm py-4 text-base font-black text-white"
                         style={{ backgroundColor: BUTTON_BG }}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
@@ -1456,7 +1460,7 @@ function ResultModal({
                     </motion.button>
                     <button
                         onClick={onClose}
-                        className="rounded-2xl border border-white/10 bg-white/5 py-4 text-base font-black text-white transition hover:bg-white/10"
+                        className="rounded-sm border border-[#27272d] bg-[#111114] py-4 text-base font-black text-white transition hover:bg-white/10"
                     >
                         Close
                     </button>
@@ -1715,7 +1719,7 @@ function CrashdleInner({
         phase === "word" && !solved && guesses.length < MAX_GUESSES;
 
     return (
-        <div className="h-[100dvh] w-full overflow-hidden text-white" style={ROOT_BG}>
+        <div className="terminal-scanlines terminal-vignette h-[100dvh] w-full overflow-hidden text-white" style={ROOT_BG}>
             <div
                 className="pointer-events-none fixed inset-0 opacity-[0.14]"
                 style={{
@@ -1730,12 +1734,15 @@ function CrashdleInner({
             <div className="relative mx-auto grid h-full w-full max-w-4xl grid-rows-[auto_1fr] gap-2 px-3 py-3 md:px-4 md:py-4 box-border">
                 <header className="flex min-h-0 flex-col items-center gap-2 text-center md:flex-row md:items-center md:justify-between md:gap-3 md:text-left">
                     <div className="min-w-0 w-full md:w-auto">
-                        <div className="truncate text-[10px] font-bold uppercase tracking-[0.2em] text-violet-200/80 md:text-[11px]">
-                            Day {puzzle.day} • resets in <span className="font-mono"><CountdownToMidnight /></span>
+                        <div className="flex items-center justify-center gap-2 truncate font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80 md:justify-start md:text-[11px]">
+                            <span className="text-amber-400">{"//"}</span>
+                            <span>DAY {String(puzzle.day).padStart(3, "0")}</span>
+                            <span className="text-white/20">::</span>
+                            <span>NEXT IN <CountdownToMidnight /></span>
                         </div>
-                        <h1 className="mt-0.5 flex items-center justify-center gap-2 text-2xl font-black tracking-tight md:justify-start md:text-4xl">
+                        <h1 className="mt-0.5 flex items-center justify-center gap-2 font-mono text-2xl font-bold tracking-[-0.02em] md:justify-start md:text-3xl">
                             <span>
-                                Crash<span style={{ color: "#c4b5fd" }}>dle</span>
+                                CRASHDLE<span className="ml-0.5 animate-pulse text-amber-400">_</span>
                             </span>
                             <svg
                                 viewBox="0 0 40 32"
@@ -1763,62 +1770,62 @@ function CrashdleInner({
                     <div className="flex shrink-0 items-center justify-center gap-1.5 md:justify-end md:gap-2">
                         <button
                             onClick={() => setShowHelp(true)}
-                            className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white md:px-4 md:py-2 md:text-sm"
+                            className="rounded-sm border border-[#27272d] bg-[#111114] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70 transition hover:border-amber-400/50 hover:text-white md:px-4 md:py-2"
                         >
-                            How
+                            HOW
                         </button>
                         <button
                             onClick={() => setShowStats(true)}
-                            className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white md:px-4 md:py-2 md:text-sm"
+                            className="rounded-sm border border-[#27272d] bg-[#111114] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70 transition hover:border-amber-400/50 hover:text-white md:px-4 md:py-2"
                         >
-                            Stats
+                            STATS
                         </button>
                         {phase === "done" && (
                             <button
                                 onClick={() => setShowResult(true)}
-                                className="rounded-full px-3 py-1.5 text-xs font-semibold text-white transition hover:opacity-90 md:px-4 md:py-2 md:text-sm"
-                                style={{ backgroundColor: BUTTON_BG }}
+                                className="rounded-sm border border-amber-400/60 bg-amber-400/15 px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-amber-300 transition hover:bg-amber-400/25 md:px-4 md:py-2"
                             >
-                                Result
+                                RESULT
                             </button>
                         )}
                     </div>
                 </header>
 
-                <main className="min-h-0 rounded-[24px] border border-white/10 bg-white/5 p-2.5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl md:rounded-[28px] md:p-4">
+                <main className="relative min-h-0 rounded-sm border border-[#1f1f24] bg-[#0e0e10] p-2.5 md:p-4">
                     <div className="grid h-full min-h-0 grid-rows-[auto_1fr_auto] items-stretch">
                         <div className="flex flex-col items-center gap-1">
                             {crashHistory.length > 0 && (
-                                <div className="flex flex-wrap items-center justify-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-white/40 md:text-[10px]">
-                                    <span>Recent busts</span>
-                                    <span aria-hidden className="text-white/15">·</span>
-                                    <div className="flex items-center gap-1">
+                                <div className="flex flex-wrap items-center justify-center gap-2 font-mono text-[10px] font-semibold tracking-tight text-white/40 md:text-[11px]">
+                                    <span className="uppercase tracking-[0.18em] text-amber-400/70">TAPE</span>
+                                    <span aria-hidden className="text-white/20">{">"}</span>
+                                    <div className="flex items-center gap-2">
                                         {crashHistory.slice(0, 5).map((entry) => (
                                             <span
                                                 key={entry.day}
-                                                className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] tracking-tight md:text-[11px] ${
+                                                className={`tracking-tight ${
                                                     entry.crashPoint >= 2
-                                                        ? "bg-emerald-500/15 text-emerald-300"
-                                                        : "bg-rose-500/15 text-rose-300"
+                                                        ? "text-emerald-400"
+                                                        : "text-rose-400"
                                                 }`}
                                             >
-                                                {entry.crashPoint.toFixed(2)}x
+                                                {fmtMult(entry.crashPoint)}{entry.crashPoint >= 2 ? "↑" : "↓"}
                                             </span>
                                         ))}
                                     </div>
                                 </div>
                             )}
                             {showSolveNow ? (
-                                <div className="text-xs font-semibold text-violet-200 md:text-sm">
-                                    Solve now for $
+                                <div className="font-mono text-xs font-semibold text-amber-300/90 md:text-sm">
+                                    <span className="text-white/40">SOLVE_NOW</span>{" "}
+                                    <span className="text-amber-400">{">"}</span> $
                                     <TickingNumber
                                         value={displayedReward}
-                                        className="font-mono font-black text-white"
+                                        className="font-mono font-bold text-white"
                                     />
                                 </div>
                             ) : (
-                                <div className="text-[10px] uppercase tracking-[0.24em] text-white/35 md:text-[11px]">
-                                    Today&apos;s board
+                                <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/35 md:text-[11px]">
+                                    {"//"} todays_board
                                 </div>
                             )}
                         </div>
@@ -1929,7 +1936,7 @@ export default function CrashdleGame() {
                 className="flex min-h-screen items-center justify-center text-white"
                 style={ROOT_BG}
             >
-                <div className="rounded-3xl border border-white/10 bg-white/5 px-6 py-4 text-sm font-semibold text-white/55 backdrop-blur-xl">
+                <div className="rounded-sm border border-[#27272d] bg-[#111114] px-6 py-4 text-sm font-semibold text-white/55 ">
                     Loading puzzle...
                 </div>
             </div>
@@ -1942,7 +1949,7 @@ export default function CrashdleGame() {
                 className="flex min-h-screen items-center justify-center px-6 text-center text-white"
                 style={ROOT_BG}
             >
-                <div className="max-w-md rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+                <div className="max-w-md rounded-sm border border-[#27272d] bg-[#111114] p-8 ">
                     <div className="mb-2 text-2xl font-black text-white">
                         Couldn't load Crash<span style={{ color: "#c4b5fd" }}>dle</span>
                     </div>
