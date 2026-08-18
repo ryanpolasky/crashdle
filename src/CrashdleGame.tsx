@@ -291,7 +291,8 @@ function buildShareText(
     text += solved
         ? `Solved in ${guesses.length}/${MAX_GUESSES}\n`
         : "Missed it\n";
-    text += `Final: $${finalAmount.toLocaleString()} 💰`;
+    text += `Final: $${finalAmount.toLocaleString()} 💰\n`;
+    text += "https://crashdle.com";
     return text.trim();
 }
 
