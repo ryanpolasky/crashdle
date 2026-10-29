@@ -582,7 +582,7 @@ function HelpModal({
                 <div className="mt-4 text-center text-sm tracking-wide text-white/60">
                     made w/ love by{" "}
                     <a
-                        href="https://www.linkedin.com/in/ryan-polasky/"
+                        href="https://ryanpolasky.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-semibold text-amber-400 transition-opacity hover:opacity-80"
